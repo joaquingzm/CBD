@@ -1,0 +1,2 @@
+Nro Especie: 1, Altura máxima: 1, Nombre científico: hola, Nombre vulgar: holav, Color: rojo
+Nro Especie: 2, Altura máxima: 2, Nombre científico: chau, Nombre vulgar: chauv, Color: azul

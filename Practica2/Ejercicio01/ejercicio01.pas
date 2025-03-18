@@ -3,7 +3,11 @@ Program ejercicio01;
 
 Uses sysutils;
 
-Const valorAlto =   9999;
+(*
+No sé que onda que le pedi a chatgpt un generador de archivos
+y el programa pareciera no poder ni abrirlos*)
+
+Const valorAlto =   '9999';
 
 Type 
 
@@ -15,6 +19,7 @@ Type
 
     regMae =   Record
         codEmp:   string;
+        nombreYApellido:   string;
         fechaNa:   string;
         direccion:   string;
         cantHijos:   integer;
@@ -27,11 +32,28 @@ Type
     arDet =   array[1..10] Of detalle;
     arRegDet =   array[1..10] Of regDet;
 
+
+
+Procedure leer(Var d:detalle;Var rD:regDet);
+Begin
+    writeln('pre if');
+    writeln('Tamaño: '+(IntToStr(filesize(d)))+', Posicion: '+(IntToStr(filepos(d))));
+    If (Not eof(d))Then
+        Begin
+            writeln('en el if');
+            read(d,rD);
+        End
+    Else
+        Begin
+            rD.codEmp := valorAlto;
+        End;
+End;
+
 Procedure iniciarArchivos(Var m:maestro;Var aD:arDet;Var aRD:arRegDet);
 
 Var 
     auxRD:   regDet;
-
+    i:   integer;
 Begin
 
     assign(m,'archivoMaestro');
@@ -39,15 +61,19 @@ Begin
 
     For i:=1 To 10 Do
         Begin
-            assign(aD[i],'archivoDetalles'+i);
+            assign(aD[i],('archivoDetalles'+(IntToStr(i))));
             reset(aD[i]);
             leer(aD[i],auxRD);
+            writeln(auxRD.codEmp);
             aRD[i] := auxRD;
 
         End;
 End;
 
 Procedure cerrarArchivos(Var m:maestro;Var aD:arDet;Var aRD:arRegDet);
+
+Var 
+    i:   integer;
 Begin
     close(m);
     For i:=1 To 10 Do
@@ -56,28 +82,22 @@ Begin
         End;
 End;
 
-Procedure leer(Var d:detalle;Var rD:regDet);
-Begin
-    If (Not eof(d))Then read(d,rD)
-    Else rD.codEmp := valorAlto;
-End;
-
-Procedure minimo(Var aD:arDet;Var aRegD:arRegDet;Var min:detalle);
+Procedure minimo(Var aD:arDet;Var aRD:arRegDet;Var min:regDet);
 
 Var 
-    posMin:   int;
+    posMin,i:   integer;
 Begin
     posMin := 1;
-    min := arRegDet[1];
+    min := aRD[1];
     For i:=2 To 10 Do
         Begin
-            If (arRegDet[i]<min.codEmp)Then
+            If (aRD[i].codEmp<min.codEmp)Then
                 Begin
-                    min := arRegDet[i];
+                    min := aRD[i];
                     posmin := i;
                 End;
         End;
-    leer(aD[posMin],arRegDet[posMin]);
+    leer(aD[posMin],aRD[posMin]);
 
 End;
 
@@ -87,28 +107,46 @@ Var
     aD:   arDet;
     informe:   text;
     aRegD:   arRegDet;
-    auxDet:   detalle;
-    auxRegDet,min:   regDet;
+    min:   regDet;
     auxRegMae:   regMae;
 
 Begin
 
     iniciarArchivos(mae,aD,aRegD);
+    assign(informe,'informe.txt');
+    rewrite(informe);
 
     minimo(aD,aRegD,min);
     While (min.codEmp<>valorAlto) Do
         Begin
-            leer(mae,auxRegMae);
-            If (auxRegMae.cantDiasCorresp >= min.cantDias)Then
-                Begin
-                    auxRegMae.cantDiasCorresp := auxRegMae.cantDiasCorresp - min.cantDias;
-                    seek(mae,filepos(mae)-1);
-                    write(mae,auxRegMae);
-                End
-            Else
-                Begin
 
+            Repeat
+                Begin
+                    read(mae,auxRegMae);
                 End;
+            Until (eof(mae)) Or (auxRegMae.codEmp=min.codEmp);
+
+            If (auxRegMae.codEmp=min.codEmp)Then
+                Begin
+                    If (auxRegMae.cantDiasCorresp >= min.cantDias)Then
+                        Begin
+                            auxRegMae.cantDiasCorresp := auxRegMae.cantDiasCorresp - min.cantDias;
+                            seek(mae,filepos(mae)-1);
+                            write(mae,auxRegMae);
+                        End
+                    Else
+                        Begin
+                            writeln(informe,'Codigo de empleado: '+min.codEmp
+                                    +', Nombre y apellido: '+ auxRegMae.nombreYApellido
+                                    +', Cantidad de días disponibles: ' +(IntToStr(auxRegMae.cantDiasCorresp))
+                            +', Cantidad de días que solicita: '+(IntToStr(min.cantDias)));
+                        End;
+                End;
+            minimo(aD,aRegD,min);
+
+
         End;
+    close(informe);
+    cerrarArchivos(mae,aD,aRegD);
 
 End.

@@ -36,11 +36,8 @@ Type
 
 Procedure leer(Var d:detalle;Var rD:regDet);
 Begin
-    writeln('pre if');
-    writeln('Tamaño: '+(IntToStr(filesize(d)))+', Posicion: '+(IntToStr(filepos(d))));
     If (Not eof(d))Then
         Begin
-            writeln('en el if');
             read(d,rD);
         End
     Else
@@ -133,6 +130,7 @@ Begin
                             auxRegMae.cantDiasCorresp := auxRegMae.cantDiasCorresp - min.cantDias;
                             seek(mae,filepos(mae)-1);
                             write(mae,auxRegMae);
+                            seek(mae, filepos(mae)-1);
                         End
                     Else
                         Begin
@@ -143,8 +141,6 @@ Begin
                         End;
                 End;
             minimo(aD,aRegD,min);
-
-
         End;
     close(informe);
     cerrarArchivos(mae,aD,aRegD);

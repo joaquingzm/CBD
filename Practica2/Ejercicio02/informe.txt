@@ -1,0 +1,19 @@
+
+Autor: Los Piojos
+Genero: Rock
+Nombre del disco: Ay ay ay, cantidad vendida: 150
+Nombre del disco: Verde paisaje del infierno, cantidad vendida: 120
+Genero: Reggae
+Nombre del disco: Ruido, cantidad vendida: 80
+
+Autor: Fito Páez
+Genero: Pop
+Nombre del disco: Circo Beat, cantidad vendida: 180
+Nombre del disco: El amor después del amor, cantidad vendida: 300
+Genero: Rock
+Nombre del disco: Naturaleza sangre, cantidad vendida: 75
+
+Autor: Los Palmeras
+Genero: Cumbia
+Nombre del disco: El bombón asesino, cantidad vendida: 500
+Nombre del disco: Perra, cantidad vendida: 400

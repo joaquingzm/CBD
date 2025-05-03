@@ -1,11 +1,13 @@
+{
+    TIPO DE EJERCICIO : ACTUALIZACIÓN DE ARCHIVOS-MAESTRO/DETALLE
+
+Este programa implementa un algoritmo que permite actualizar la información de un 
+archivo maestro a partir de múltiples detalles. 
+}
 
 Program ejercicio01;
 
 Uses sysutils;
-
-(*
-No sé que onda que le pedi a chatgpt un generador de archivos
-y el programa pareciera no poder ni abrirlos*)
 
 Const valorAlto =   '9999';
 
@@ -53,15 +55,14 @@ Var
     i:   integer;
 Begin
 
-    assign(m,'archivoMaestro');
+    assign(m,'archivoMaestro.dat');
     reset(m);
 
     For i:=1 To 10 Do
         Begin
-            assign(aD[i],('archivoDetalles'+(IntToStr(i))));
+            assign(aD[i],('archivoDetalles'+(IntToStr(i)))+'.dat');
             reset(aD[i]);
             leer(aD[i],auxRD);
-            writeln(auxRD.codEmp);
             aRD[i] := auxRD;
 
         End;
@@ -117,27 +118,33 @@ Begin
     While (min.codEmp<>valorAlto) Do
         Begin
 
-            Repeat
+            while (not eof(mae)) do
                 Begin
                     read(mae,auxRegMae);
+                    if (auxRegMae.codEmp=min.codEmp) then break;
                 End;
-            Until (eof(mae)) Or (auxRegMae.codEmp=min.codEmp);
 
             If (auxRegMae.codEmp=min.codEmp)Then
                 Begin
                     If (auxRegMae.cantDiasCorresp >= min.cantDias)Then
                         Begin
                             auxRegMae.cantDiasCorresp := auxRegMae.cantDiasCorresp - min.cantDias;
-                            seek(mae,filepos(mae)-1);
-                            write(mae,auxRegMae);
+
+                            // Lo comento porque sino cada vez que corro el programa se modifica el contenido
+                            // del archivo maestro y terminan todos pidiendo más días de los que tienen
+                            
+                            //seek(mae,filepos(mae)-1);
+                            //write(mae,auxRegMae);
+
                             seek(mae, filepos(mae)-1);
                         End
                     Else
                         Begin
-                            writeln(informe,'Codigo de empleado: '+min.codEmp
+                            writeln(informe,
+                                    'Codigo de empleado: '+min.codEmp
                                     +', Nombre y apellido: '+ auxRegMae.nombreYApellido
                                     +', Cantidad de días disponibles: ' +(IntToStr(auxRegMae.cantDiasCorresp))
-                            +', Cantidad de días que solicita: '+(IntToStr(min.cantDias)));
+                                    +', Cantidad de días que solicita: '+(IntToStr(min.cantDias)));
                         End;
                 End;
             minimo(aD,aRegD,min);

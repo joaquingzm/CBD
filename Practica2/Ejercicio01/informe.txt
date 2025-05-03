@@ -1,0 +1,1 @@
+Codigo de empleado: 0002, Nombre y apellido: Juan Perez, Cantidad de días disponibles: 5, Cantidad de días que solicita: 7

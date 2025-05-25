@@ -146,7 +146,7 @@ var
     rDmin,auxD : registroDetalle;
     auxM : registroMaestro;
 
-    añoActual,mesActual,diaActual : integer;
+    añoActual,mesActual,diaActual,codigoModelo,codigoMarca : integer;
     marcaActual, modeloActual,nombreMenosVendido,nombreMasVendido : string;
 
     montoTotal : real;
@@ -179,16 +179,19 @@ begin
                 begin
 
                     marcaActual := rDmin.nombreMarca;
-                    auxVendido := 0;
+                    codMarcaActual := rDmin.codigoMarca;
+                    
                     cantMasVendido := -9999;
                     cantMenosVendido := 9999;
 
-                    while(rDmin.nombreMarca = marcaActual)and(rDmin.dia = diaActual)and(rDmin.mes = mesActual)and(rDmin.año = añoActual)do
+                    while(rDmin.nombreMarca = codMarcaActual)and(rDmin.dia = diaActual)and(rDmin.mes = mesActual)and(rDmin.año = añoActual)do
                     begin
 
                         modeloActual := rDmin.nombreModelo;
+                        codModeloActual := rDmin.codigoModelo;
+                        auxVendido := 0;
 
-                        while(rDmin.nombreModelo = modeloActual)and(rDmin.nombreMarca = marcaActual)and(rDmin.dia = diaActual)and(rDmin.mes = mesActual)and(rDmin.año = añoActual)do
+                        while(rDmin.nombreModelo = codModeloActual)and(rDmin.nombreMarca = codMarcaActual)and(rDmin.dia = diaActual)and(rDmin.mes = mesActual)and(rDmin.año = añoActual)do
                         begin
                             montoTotal := montoTotal + rDmin.montoOperacion;
                             cantidadTotal := cantidadTotal + 1;

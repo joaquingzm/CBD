@@ -27,6 +27,10 @@ begin
     reset(info);
     rewrite(arch);
 
+    auxM.dni := 0;
+
+    write(arch,auxM);
+
     while(not eof(info))do
     begin
         readln(info,auxM.dni,auxM.sueldo);

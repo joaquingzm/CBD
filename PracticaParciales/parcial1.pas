@@ -75,7 +75,7 @@ var
     nLibre : integer;
 begin
     reset(arch);
-    reset(bajas);
+    append(bajas);
 
     read(arch,auxEncabezado);
     auxM.dni := -1;
@@ -87,7 +87,9 @@ begin
     if(auxM.dni = dni)do
     begin
 
-        writeln(bajas,auxM.dni,auxM.nombre,auxM.nombre,auxM.apellido);
+        writeln(bajas,auxM.dni,auxM.sueldo);
+        writeln(bajas,auxM.nombre);
+        writeln(bajas,auxM.apellido);
 
         nLibre := filepos(arch) - 1;
         seek(arch,nLibre);

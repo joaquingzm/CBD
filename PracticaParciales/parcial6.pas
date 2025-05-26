@@ -32,20 +32,21 @@ var
 begin
 
     assign(t,'detalle.txt');
+    reset(t);
     assign(m,'maestro.dat');
     rewrite(m);
 
     readln(t,aux.codigoExcursion,aux.cantidadTotalVendida);
     readln(t,aux.nombre);
     readln(t,aux.descripcion);
-    while(not eol(t))do
+    while(not eof(t))do
     begin
 
         rM := aux;
         rM.cantidadTotalVendida := 0;
         codActual := aux.codigoExcursion;
 
-        while(not eol(t))and(codActual = aux.codigoExcursion)do
+        while(not eof(t))and(codActual = aux.codigoExcursion)do
         begin
 
             rM.cantidadTotalVendida := rM.cantidadTotalVentida + aux.cantidadTotalVendida;

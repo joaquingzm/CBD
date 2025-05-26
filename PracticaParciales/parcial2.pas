@@ -111,6 +111,7 @@ end;
 procedure iniciarArchivos(var t:text;var m:maestro;var aD:arrayDetalle;var aCD:arrayCabecerasDetalle);
 var
     i : integer;
+    auxStr : string;
 begin
     assign(t,'informe.txt');
     rewrite(t);
@@ -118,7 +119,8 @@ begin
     rewrite(m);
     for i:= 1 to 20 do
     begin
-        assign(aD[i],'detalle'+Str(i)+'.dat');
+        Str(i,auxStr);
+        assign(aD[i],'detalle'+auxStr+'.dat');
         reset(aD[i]);
         leer(aD[i],aCD[i]);
     end;

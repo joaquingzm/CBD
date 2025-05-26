@@ -5,6 +5,8 @@ codigoExcursion CantidadTotalVendida
 nombre
 descripcion
 
+
+NO LO TERMINE
 }
 
 program parcial6;

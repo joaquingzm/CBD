@@ -101,18 +101,62 @@ var
     m : maestro;
     aD : arrayDetalles;
     aCD : arrayCabecerasDetalles;
+    t : text;
 
     auxM : registroMaestro;
     rDmin : registroDetalle;
+    aux,cantVV,cantTotalVV,cantTotalVV,cantVB,cantTotalVB,cantVA,cantTotalVA : integer;
 begin
 
     iniciarArchivos(m,aD,aCD);
+    assign(t,'cantidad_votos_04_07_2023.txt');
+    rewrite(t);
 
     minimo(aD,aCD,rDmin);
+    auxM.codProvincia := valorAlto;
+    cantTotalVV :=0;
+    cantTotalVB :=0;
+    cantTotalVA :=0;
+
     while(rDmin.codProvincia <> valorAlto)do
     begin
-        read(m,auxM)
+
+        aux := rDmin.codProvincia;
+        cantVV :=0;
+        cantVB :=0;
+        cantVA :=0;
+
+        while(rDmin.codProvincia := aux)do
+        begin
+            cantVV := cantVV + rDmin.cantidadVotosValidos;
+            cantVB := cantVB + rDmin.cantidadVotosBlanco;
+            cantVA := cantVA + rDmin.cantidadVotosAnulados;
+            minimo(aD,aCD,rDmin);
+        end;
+
+        while(auxM.codProvincia <> aux)do
+        begin
+            read(m,auxM);
+        end;
+        
+        auxM.cantTotalVotosValidos := auxM.cantTotalVotosValidos + cantVV;
+        auxM.cantTotalVotosBlanco := auxM.cantTotalVotosBlanco + cantVB;
+        auxM.cantTotalVotosAnulados := auxM.cantTotalVotosAnulados + cantVA;
+
+        cantTotalVV := cantTotalVV + cantVV;
+        cantTotalVB := cantTotalVB + cantVB;
+        cantTotalVA := cantTotalVA + cantVA;
+
+        seek(m,filepos(m)-1);
+        write(m,auxM);
     end;
 
+    writeln(t,'Cantidad de archivos procesados: ',);
+    writeln(t,'Cantidad total de votos: ',cantTotalVV + cantTotalVB + cantTotalVA);
+    writeln(t,'Cantidad de votos válidos: ',canTotalVV);
+    writeln(t,'Cantidad de votos anulados: ',cantTotalVA);
+    writeln(t,'Cantidad de votos en blanco: ',cantTotalVB);
+
+    close(t);
     cerrarArchivos(m,aD);
 end.
